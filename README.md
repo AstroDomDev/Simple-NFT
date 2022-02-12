@@ -1,3 +1,5 @@
+# WARNING! This project is under construction and is currently unusable! Check back later in development!
+
 # Simple-NFT
 Simple-NFT is a tool written in Python to simply layer your assets together and give every combination of your assets.
 
