@@ -45,6 +45,7 @@ def main():
     ### Initialize Variables ###
     assets = os.listdir("./assets")
     order = dict()
+    layer_dict = dict()
 
     ### Get Layers ###
     layers = [asset for asset in assets if os.path.isdir("./assets/" + asset)]
@@ -63,6 +64,11 @@ def main():
     for i in list(order.keys()):
         print(f"{i}: {order[i]}")
     if not order_confirmation(): main()
+
+    ### Get Dict for All Layer Items ###
+    for layer in list(order.values()):
+        layer_dict[layer] = [file for file in os.listdir("./assets/"+layer) if file.endswith(".png")]
+    
 
 
 
