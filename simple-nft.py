@@ -1,4 +1,5 @@
-from PIL import Image
+from ast import literal_eval
+from PIL import Image, ImageDraw
 import os
 import sys
 
@@ -34,6 +35,16 @@ def set_order(layer, dictionary):
     elif z_index < 1: print("Index value must be positive."); return set_order(layer, dictionary)
     else: return int(z_index)
 
+### Set Resolution of Images ###
+def set_res():
+    res = input("Enter Resolution (Format: WxH, eg: 1000x500): ")
+    if 'x' not in res: print("Resolution must include x to separate values."); return set_res()
+    res = res.split("x")
+    if len(res) != 2: print("Invalid resolution!"); return set_res()
+    width = int(res[0])
+    height = int(res[1])
+    return (width, height)
+
 ### Confirm Layer Ordering ###
 def order_confirmation():
     restart = input("Is this order correct? y | n: ")
@@ -49,6 +60,17 @@ def main():
 
     ### Get Layers ###
     layers = [asset for asset in assets if os.path.isdir("./assets/" + asset)]
+
+    layer_count = len(layers)
+
+    ### Layer Rules ###
+    if layer_count > 15:
+        sys.exit("You can have at most 15 layers.")
+    elif layer_count <= 1:
+        sys.exit("Must have at least 2 layers.")
+
+    ### Set Resolution ###
+    resolution = set_res()
 
     ### Set Layer Order ###
     for layer in layers:
@@ -67,7 +89,27 @@ def main():
 
     ### Get Dict for All Layer Items ###
     for layer in list(order.values()):
-        layer_dict[layer] = [file for file in os.listdir("./assets/"+layer) if file.endswith(".png")]
+        layer_dict[layer] = [Image.open("./assets/"+layer+"/"+file).convert(mode='RGBA').resize(resolution, resample=Image.NEAREST) for file in os.listdir("./assets/"+layer) if file.endswith(".png")]
+
+    ### Combine Layers ###
+    count = 0
+    for l1 in layer_dict[order[1]]:
+        for l2 in layer_dict[order[2]]:
+            last = Image.alpha_composite(l1, l2)
+            if layer_count > 2:
+                for l3 in layer_dict[order[3]]: 
+                    last = Image.alpha_composite(last, l3)
+                    if layer_count > 3:
+                        for l4 in layer_dict[order[4]]:
+                            last = Image.alpha_composite(last, l4)
+                            if layer_count > 4:
+                                pass
+                            else: count += 1; last.save()
+                    else: count += 1; last.save()
+            else: count += 1; last.save()
+
+
+
     
 
 
