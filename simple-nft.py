@@ -105,10 +105,10 @@ def main():
                             if layer_count > 4:
                                 for l5 in layer_dict[order[5]]:
                                     last = Image.alpha_composite(last, l5)
-                                    count += 1; last.save("./output/"+count+".png")
-                            else: count += 1; last.save("./output/"+count+".png")
-                    else: count += 1; last.save("./output/"+count+".png")
-            else: count += 1; last.save("./output/"+count+".png")
+                                    count += 1; last.save("./output/"+str(count)+".png")
+                            else: count += 1; last.save("./output/"+str(count)+".png")
+                    else: count += 1; last.save("./output/"+str(count)+".png")
+            else: count += 1; last.save("./output/"+str(count)+".png")
 
 
 
