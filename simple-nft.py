@@ -18,6 +18,7 @@ def compressed_dict(dictionary):
         while key-1 not in list(dictionary.keys()) and key > 1: dictionary[key-1] = dictionary[key]; del dictionary[key]; key = key-1
     return dictionary
 
+### Reverse Dictionary ###
 def reversed_dict(dictionary):
     output_dict = dict()
     dict_keys = list(dictionary.keys())
@@ -110,12 +111,6 @@ def main():
                             else: count += 1; last.save("./output/"+str(count)+".png")
                     else: count += 1; last.save("./output/"+str(count)+".png")
             else: count += 1; last.save("./output/"+str(count)+".png")
-
-
-
-    
-
-
 
 if __name__ == "__main__":
     main()
