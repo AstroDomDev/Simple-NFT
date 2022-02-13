@@ -37,12 +37,13 @@ def set_order(layer, dictionary):
 
 ### Set Resolution of Images ###
 def set_res():
-    res = input("Enter Resolution (Format: WxH, eg: 1000x500): ")
-    if 'x' not in res: print("Resolution must include x to separate values."); return set_res()
-    res = res.split("x")
-    if len(res) != 2: print("Invalid resolution!"); return set_res()
-    width = int(res[0])
-    height = int(res[1])
+    try: width = input("Enter Image Width in Pixels: ")
+    except ValueError: print("Resolution must be integer."); return set_res()
+    except: print("Unexpected Error!"); return set_res()
+    try: height = input("Enter Image Height in Pixels: ")
+    except ValueError: print("Resolution must be integer."); return set_res()
+    except: print("Unexpected Error!"); return set_res()
+    if height < 1 or width < 1: print("Resolution must be positive."); return set_res()
     return (width, height)
 
 ### Confirm Layer Ordering ###
