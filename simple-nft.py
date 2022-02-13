@@ -1,4 +1,3 @@
-from ast import literal_eval
 from PIL import Image, ImageDraw
 import os
 import sys
