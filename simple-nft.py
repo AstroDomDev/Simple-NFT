@@ -37,10 +37,10 @@ def set_order(layer, dictionary):
 
 ### Set Resolution of Images ###
 def set_res():
-    try: width = input("Enter Image Width in Pixels: ")
+    try: width = int(input("Enter Image Width in Pixels: "))
     except ValueError: print("Resolution must be integer."); return set_res()
     except: print("Unexpected Error!"); return set_res()
-    try: height = input("Enter Image Height in Pixels: ")
+    try: height = int(input("Enter Image Height in Pixels: "))
     except ValueError: print("Resolution must be integer."); return set_res()
     except: print("Unexpected Error!"); return set_res()
     if height < 1 or width < 1: print("Resolution must be positive."); return set_res()
@@ -65,8 +65,8 @@ def main():
     layer_count = len(layers)
 
     ### Layer Rules ###
-    if layer_count > 15:
-        sys.exit("You can have at most 15 layers.")
+    if layer_count > 10:
+        sys.exit("You can have at most 10 layers.")
     elif layer_count <= 1:
         sys.exit("Must have at least 2 layers.")
 
@@ -89,10 +89,17 @@ def main():
     if not order_confirmation(): main()
 
     ### Get Dict for All Layer Items ###
+    print("Validating Assets...")
     for layer in list(order.values()):
         layer_dict[layer] = [Image.open("./assets/"+layer+"/"+file).convert(mode='RGBA').resize(resolution, resample=Image.NEAREST) for file in os.listdir("./assets/"+layer) if file.endswith(".png")]
+    print("Assets Verified!")
+
+    ### Verify Output Folder ###
+    if not os.path.isdir("./output"):
+        os.mkdir("./output", 0o666)
 
     ### Combine Layers ###
+    print("Combining Layers...")
     count = 0
     for l1 in layer_dict[order[1]]:
         for l2 in layer_dict[order[2]]:
@@ -106,10 +113,31 @@ def main():
                             if layer_count > 4:
                                 for l5 in layer_dict[order[5]]:
                                     last = Image.alpha_composite(last, l5)
-                                    count += 1; last.save("./output/"+str(count)+".png")
+                                    if layer_count > 5:
+                                        for l6 in layer_dict[order[6]]:
+                                            last = Image.alpha_composite(last, l6)
+                                            if layer_count > 6:
+                                                for l7 in layer_dict[order[7]]:
+                                                    last = Image.alpha_composite(last, l7)
+                                                    if layer_count > 7:
+                                                        for l8 in layer_dict[order[8]]:
+                                                            last = Image.alpha_composite(last, l8)
+                                                            if layer_count > 8:
+                                                                for l9 in layer_dict[order[9]]:
+                                                                    last = Image.alpha_composite(last, l9)
+                                                                    if layer_count > 9:
+                                                                        for l10 in layer:
+                                                                            last = Image.alpha_composite(last, l10)
+                                                                            count += 1; last.save("./output/"+str(count)+".png")
+                                                                    else: count += 1; last.save("./output/"+str(count)+".png")
+                                                            else: count += 1; last.save("./output/"+str(count)+".png")
+                                                    else: count += 1; last.save("./output/"+str(count)+".png")
+                                            else: count += 1; last.save("./output/"+str(count)+".png")
+                                    else: count += 1; last.save("./output/"+str(count)+".png")
                             else: count += 1; last.save("./output/"+str(count)+".png")
                     else: count += 1; last.save("./output/"+str(count)+".png")
             else: count += 1; last.save("./output/"+str(count)+".png")
+    print("Complete!")
 
 if __name__ == "__main__":
     main()
